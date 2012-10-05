@@ -1,0 +1,17 @@
+{
+  "name": "Concierge",
+  "author": "Mike Schinkel <mikeschinkel@gmail.com>",
+  "description": "A Node.js solution for using code-on-demand for a RESTful server.",
+  "subdomain": "concierge",
+  "scripts": {
+    "start": "index.js"
+  },
+  "version": "0.0.0-14",
+  "engines": {
+    "node": "0.8.x"
+  },
+  "dependencies": {
+    "syntax-error": "0.0.0"
+  },
+  "url": "http://concierge.jit.su"
+}
