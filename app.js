@@ -46,9 +46,10 @@ server.on('request', function(request, response) {
 
 			request.on('end', function() {
 				try {
-					var concierge = require('./concierge.js');
 					var queryString = require('querystring');
-					var runner = require("./runner");
+
+					var concierge = require('./concierge.js');
+					var runner = require("./runner.js");
 
 					concierge.__fixup(request,response);
 
