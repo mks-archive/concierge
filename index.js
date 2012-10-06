@@ -1,55 +1,73 @@
 
+var http = require('http');
+
 var codeToRun = '$api.result.status';
 
-function outForm( response ) {
+function writeOutputForm(response) {
 	var fs = require('fs');
 	fs.readFile('./form.html',function (err, form) {
-		if (err) throw err;
-		var html = form.toString().replace("{code}",codeToRun);
-		response.write(html);
-		response.end();
+		if (err) {
+			throw err;
+		}
 
+		var html = form.toString().replace("{code}",codeToRun);
+
+		response.write(html);
+
+		response.end();
 	});
 }
 
-	var http = require('http');
-	http.createServer(function (request, response) {
-		console.log('Got a hit.');
-		response.writeHead(200, "OK", {'Content-Type': 'text/html'});
+var server = http.createServer();
 
-		var httpPOSTbody = '';
-		switch ( request.method + request.url ) {
-			case 'GET/':
-				outForm(response);
-				break;
+server.on('request', function(request, response) {
+	console.log('Got a hit.');
 
-			case 'POST/run':
-				request.on( 'data', function(chunk) {
-					console.log("Received body data: "+chunk.toString());
-					httpPOSTbody += chunk.toString();
-				});
+	response.writeHead(200, "OK", {'Content-Type': 'text/html'});
 
-				request.on( 'end', function() {
-					try {
-						var $api = require('./concierge.js');
-						$api.__fixup(request,response);
-						var qs = require('querystring');
-						codeToRun = qs.parse(httpPOSTbody).code.trim();
-						var result = require("./runner").run( $api, codeToRun );
-						response.write( result );
-					} catch (err) {
-						response.write( "Unknown error." );
-					}
-					outForm(response,httpPOSTbody);
-				});
+	switch (request.method + request.url) {
+		case 'GET/':
+			outForm(response);
+			break;
 
-				break;
+		case 'POST/run':
+			var reply = '';
+		
+			request.on('data', function(chunk) {
+				console.log("Received body data: " + chunk.toString());
 
-			default:
-				response.writeHead(301, {'Location': '/'});
-				response.end( "Nothing to see here. Move along. Nothing to see." );
-				break;
-		}
+				reply += chunk.toString();
+			});
 
-	}).listen(8000, "127.0.0.1");
-	console.log('Server running at http://127.0.0.1:8000/');
+			request.on('end', function() {
+				try {
+					var api = require('./concierge.js');
+					var queryString = require('querystring');
+					var runner = require("./runner");
+
+					api.__fixup(request,response);
+
+					codeToRun = queryString.parse(reply).code.trim();
+
+					var result = runner.run(api, codeToRun);
+
+					response.write(result);
+				} catch (err) {
+					response.write("Unknown error.");
+				}
+
+				writeOutputForm(response, reply);
+			});
+
+			break;
+
+		default:
+			response.writeHead(301, {'Location': '/'});
+			response.end( "Nothing to see here. Move along. Nothing to see." );
+			break;
+	}
+});
+
+server.listen(8000, "127.0.0.1");
+
+console.log('Server running at http://127.0.0.1:8000/');
