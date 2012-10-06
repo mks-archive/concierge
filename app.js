@@ -68,7 +68,7 @@ server.on('request', function(request, response) {
 
 		default:
 			response.writeHead(301, {'Location': '/'});
-			response.end( "Nothing to see here. Move along. Nothing to see." );
+			response.end("Nothing to see here. Move along. Nothing to see.");
 			break;
 	}
 });
