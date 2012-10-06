@@ -21,6 +21,8 @@ exports.run = function(concierge, code) {
 	} else {
 		try {
 			if (concierge.host.indexOf('127.0.0.1:') == 0) {
+				var api = concierge;
+				
 				result = eval(code);
 			} else {
 				result = vm.runInNewContext(code, {"$api": concierge}).toString();
