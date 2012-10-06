@@ -1,16 +1,21 @@
 
 var http = require('http');
 
-var codeToRun = '$api.result.status';
-
-function writeOutputForm(response) {
+function writeOutputForm(response, code) {
 	var fs = require('fs');
+
 	fs.readFile('./form.html',function (err, form) {
 		if (err) {
 			throw err;
 		}
 
-		var html = form.toString().replace("{code}",codeToRun);
+		var html = form.toString();
+
+		if (code) {
+			html.replace("{code}", code);
+		} else {
+			html.replace("{code}", "JSON.stringify(api);");
+		}
 
 		response.write(html);
 
@@ -27,12 +32,12 @@ server.on('request', function(request, response) {
 
 	switch (request.method + request.url) {
 		case 'GET/':
-			outForm(response);
+			outForm(response, null);
 			break;
 
 		case 'POST/run':
 			var reply = '';
-		
+
 			request.on('data', function(chunk) {
 				console.log("Received body data: " + chunk.toString());
 
