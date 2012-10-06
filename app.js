@@ -32,7 +32,7 @@ server.on('request', function(request, response) {
 
 	switch (request.method + request.url) {
 		case 'GET/':
-			outForm(response, null);
+			writeOutputForm(response, null);
 			break;
 
 		case 'POST/run':
