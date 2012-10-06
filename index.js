@@ -31,7 +31,7 @@ function outForm( response ) {
 
 				request.on( 'end', function() {
 					try {
-						var $api = require('./../www/concierge.js');
+						var $api = require('./concierge.js');
 						$api.__fixup(request,response);
 						var qs = require('querystring');
 						codeToRun = qs.parse(httpPOSTbody).code.trim();
