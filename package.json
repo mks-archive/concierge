@@ -4,7 +4,7 @@
   "description": "A Node.js solution for using code-on-demand for a RESTful server.",
   "subdomain": "concierge",
   "scripts": {
-    "start": "index.js"
+    "start": "app.js"
   },
   "version": "0.0.0-16",
   "engines": {
