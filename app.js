@@ -46,15 +46,15 @@ server.on('request', function(request, response) {
 
 			request.on('end', function() {
 				try {
-					var api = require('./concierge.js');
+					var concierge = require('./concierge.js');
 					var queryString = require('querystring');
 					var runner = require("./runner");
 
-					api.__fixup(request,response);
+					concierge.__fixup(request,response);
 
 					codeToRun = queryString.parse(reply).code.trim();
 
-					var result = runner.run(api, codeToRun);
+					var result = runner.run(concierge, codeToRun);
 
 					response.write(result);
 				} catch (err) {
