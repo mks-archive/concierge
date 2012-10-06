@@ -12,9 +12,9 @@ function writeOutputForm(response, code) {
 		var html = form.toString();
 
 		if (code) {
-			html.replace("{code}", code);
+			html = html.replace("{code}", code);
 		} else {
-			html.replace("{code}", "JSON.stringify(api);");
+			html = html.replace("{code}", "JSON.stringify(api);");
 		}
 
 		response.write(html);
@@ -37,6 +37,7 @@ server.on('request', function(request, response) {
 
 		case 'POST/run':
 			var reply = '';
+			var code = '';
 
 			request.on('data', function(chunk) {
 				console.log("Received body data: " + chunk.toString());
@@ -53,16 +54,16 @@ server.on('request', function(request, response) {
 
 					concierge.__fixup(request,response);
 
-					codeToRun = queryString.parse(reply).code.trim();
+					code = queryString.parse(reply).code.trim();
 
-					var result = runner.run(concierge, codeToRun);
+					var result = runner.run(concierge, code);
 
 					response.write(result);
 				} catch (err) {
 					response.write("Unknown error.");
 				}
 
-				writeOutputForm(response, reply);
+				writeOutputForm(response, code);
 			});
 
 			break;
