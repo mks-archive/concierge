@@ -1,3 +1,6 @@
+var checkForSyntaxError = require('syntax-error');
+var vm = require("vm");
+
 /**
  * http://nodejs.org/api/vm.html
  * http://izs.me/v8-docs/classv8_1_1Context.html#_details
@@ -7,30 +10,27 @@
  * 	https://npmjs.org/package/funex
  *
  */
-exports.run = function( $api,code ) {
+exports.run = function(concierge, code) {
 	"use strict";
 
 	var result = '';
-	var se = require('syntax-error');
-	var err = se(code);
+	var error = checkForSyntaxError(code);
 
-	if (err) {
-		result = 'JAVASCRIPT SYNTAX ERROR: ' + err;
+	if (error) {
+		result = 'JAVASCRIPT SYNTAX ERROR: ' + error;
 	} else {
 		try {
-			if (0==$api.host.indexOf('127.0.0.1:')) {
+			if (concierge.host.indexOf('127.0.0.1:') == 0) {
 				result = eval(code);
 			} else {
-				var vm = require("vm");
-				result = vm.runInNewContext(code,{"$api":$api}).toString();
+				result = vm.runInNewContext(code, {"$api": concierge}).toString();
 			}
-		} catch (err) {
-			result = "JAVASCRIPT RUNTIME ERROR: " + err.type;
+		} catch (error) {
+			result = "JAVASCRIPT RUNTIME ERROR: " + error.type;
 		}
 	}
 	return result;
 }
-
 
 ///**
 // * https://npmjs.org/package/contextify
