@@ -1,74 +1,102 @@
-
+var helper = require("./concierge-helper.js");
 var http = require('http');
 
-function writeOutputForm(response, code) {
+helper.demoApiName = 'foursquare';
+
+/**
+ * THIS FUNCTION FOR INITIAL DEVELOPMENT AND TESTING ONLY
+ * We need a better form handling engine once we get the
+ * fundamental architecture issues worked out.
+ */
+function writeOutputForm(response, params) {
 	var fs = require('fs');
 
-	fs.readFile('./form.html',function (err, form) {
+	fs.readFile('./form.html', function(err, form) {
 		if (err) {
 			throw err;
 		}
 
 		var html = form.toString();
 
-		if (code) {
-			html.replace("{code}", code);
-		} else {
-			html.replace("{code}", "JSON.stringify(api);");
+		if (params.hasOwnProperty('js_code') ) {
+			html = html.replace("{js_code}", params.js_code);
 		}
 
-		response.write(html);
-
-		response.end();
+		if (params.hasOwnProperty('api_name') ) {
+			html = html.replace("{api_name}", params.api_name);
+		}
+		response.end(html);
 	});
 }
 
 var server = http.createServer();
 
-server.on('request', function(request, response) {
+server.on('request', function (request, response) {
 	console.log('Got a hit.');
 
-	response.writeHead(200, "OK", {'Content-Type': 'text/html'});
+	response.writeHead(200, "OK", {'Content-Type':'text/html'});
 
-	switch (request.method + request.url) {
+	var urlParts = request.url.split('/');
+
+	switch (request.method + '/' + urlParts[1]) {
 		case 'GET/':
-			writeOutputForm(response, null);
+			writeOutputForm( response, {
+				api_name: helper.demoApiName,
+				js_code: helper.loadExampleCode('demo',helper.demoApiName)
+			});
+			break;
+
+		case 'GET/examples':
+			var concierge = require('./concierge.js')._setNodeArgs(request, response);
+			var $api = concierge.load(urlParts[2]);
+			var fs = require('fs');
+			$api.credentials = helper.loadCredentials(urlParts[2]);
+			var codeToRun = helper.loadExampleCode(urlParts[2],urlParts[3]);
+			var result = require("./runner.js").run($api,codeToRun);
+			if ( typeof result == 'string' )
+				concierge.out( result );
 			break;
 
 		case 'POST/run':
 			var reply = '';
 
-			request.on('data', function(chunk) {
+			request.on('data', function (chunk) {
 				console.log("Received body data: " + chunk.toString());
 
 				reply += chunk.toString();
 			});
 
-			request.on('end', function() {
+			request.on('end', function () {
 				try {
 					var queryString = require('querystring');
 
-					var concierge = require('./concierge.js');
-					var runner = require("./runner.js");
+					var concierge = require('./concierge.js')._setNodeArgs(request, response);
 
-					concierge.__fixup(request,response);
+					var query = queryString.parse(reply);
 
-					codeToRun = queryString.parse(reply).code.trim();
+					var codeToRun = query.js_code.trim();
+					var apiName = query.api_name.trim();
 
-					var result = runner.run(concierge, codeToRun);
+					var $api = concierge.load(apiName);
 
-					response.write(result);
+					/**
+					 * Credentials need to be able to be loaded from either POST or embedded in js_code
+					 */
+					$api.credentials = helper.loadCredentials(apiName);
+
+					require("./runner.js").run($api, apiName, codeToRun);
+
 				} catch (err) {
-					response.write("Unknown error.");
+					response.end("Unknown error.");
 				}
 
-				writeOutputForm(response, reply);
+				//writeOutputForm(response, query);
 			});
 
 			break;
 
 		default:
-			response.writeHead(301, {'Location': '/'});
+			response.writeHead(301, {'Location':'/'});
 			response.end("Nothing to see here. Move along. Nothing to see.");
 			break;
 	}

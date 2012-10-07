@@ -5,8 +5,9 @@
 </head>
 <body>
 <form action="/run" method="post">
-<h1><label for="code">Concierge Code:</label></h1>
-<textarea id="code" name="code" rows="10" cols="80">{code}</textarea><br/>
+<h1>Concierge</h1>
+<label for="api_name">API:</label><br/><input type="text" id="api_name" name="api_name" value="{api_name}" /><br/>
+<label for="js_code">Code:</label><br/><textarea id="js_code" name="js_code" rows="10" cols="80">{js_code}</textarea><br/>
 <input type="submit" name="run" value="Run!" />
 </form>
 </body>

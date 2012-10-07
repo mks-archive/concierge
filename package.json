@@ -6,12 +6,13 @@
   "scripts": {
     "start": "app.js"
   },
-  "version": "0.0.0-16",
+  "version": "0.0.0-17",
   "engines": {
     "node": "0.8.x"
   },
   "dependencies": {
-    "syntax-error": "0.0.0"
+    "syntax-error": "0.0.0",
+    "async": "0.0.0"
   },
   "url": "http://concierge.jit.su"
 }

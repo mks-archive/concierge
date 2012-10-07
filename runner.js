@@ -10,44 +10,25 @@ var vm = require("vm");
  * 	https://npmjs.org/package/funex
  *
  */
-exports.run = function(concierge, code) {
+exports.run = function($api, apiName, jsCode) {
 	"use strict";
 
 	var result = '';
-	var error = checkForSyntaxError(code);
+//	var error = checkForSyntaxError(jsCode);
+	var error = null;
 
 	if (error) {
-		result = 'JAVASCRIPT SYNTAX ERROR: ' + error;
+		result = 'JAVASCRIPT SYNTAX ERROR[' + apiName +']: ' + error;
 	} else {
 		try {
-			if (concierge.host.indexOf('127.0.0.1:') == 0) {
-				result = eval(code);
+			if ('127.0.0.1' == $api.host) {
+				result = eval(jsCode);
 			} else {
-				result = vm.runInNewContext(code, {"$api": concierge}).toString();
+				result = vm.runInNewContext(jsCode, {"$api": $api}).toString();
 			}
 		} catch (error) {
-			result = "JAVASCRIPT RUNTIME ERROR: " + error.type;
+			$api.end(result = 'JAVASCRIPT RUNTIME ERROR[' + apiName +']: ' + error.type);
 		}
 	}
 	return result;
 }
-
-///**
-// * https://npmjs.org/package/contextify
-// * https://github.com/brianmcd/contextify/blob/master/README.md
-// */
-//exports.run = function( $api,code ) {
-//	"use strict";
-//	//global.process = null; // global.process allows some bad juju.
-//	var result;
-//	try {
-//		var Contextify = require('contextify');
-//		var sandbox = { "$api" : $api };
-//		Contextify(sandbox);
-//		result = sandbox.run(code);
-//		sandbox.dispose(); // free the resources allocated for the context.
-//	} catch (err) {
-//		result = "ERROR: " + err.type;
-//	}
-//	return result.toString();
-//}

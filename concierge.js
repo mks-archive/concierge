@@ -1,126 +1,250 @@
 /**
  * Concierge - A Node.js solution for using code-on-demand for a RESTful server.
+ * API specific modules must set these
+ * @type {Object}
  *
- * @type {Number}
- * @private
+ * 	module.exports.credentials = {};
+ * 	module.exports.service = {};
+ * 	module.exports.links = {};
+ *
  */
-var _code = 0;
-function getDefaultResult() {
-	return {
-		code:0,
-		message:"",
-		status:"success",
-		data:{} }
-}
-function getHttpStatusMesssage( code ) {
-	var codes = {
-		"200": "Ok",
-		"301": "Moved Permenantly",
-		"302": "Found",
-		"404": "Not Found"
-	};
+
+/**
+ * Module local vars
+ */
+var helper = require("./concierge-helper.js");
+var nodeRequest = null;
+var nodeResponse = null;
+
+/**
+ * Module exported properties
+ */
+module.exports.root;
+module.exports.name = '$api';
+module.exports.version = '0.0';
+module.exports.protocol = 'https';
+module.exports.server = {};
+module.exports.request = {};
+module.exports.response = helper.getDefaultResponse();
+module.exports.result = {};
+
+module.exports.onServiceInit = function(service){};
+
+module.exports.filterOutput = function(output){return output;};
+
+module.exports.out = function(){};
+
+
+/**
+ * Convenience properties
+\ */
+module.exports.host = '';
+module.exports.port = 80;
+
+/*
+ * Load an API-specific Concierge
+ */
+module.exports.load = function( apiName ) {
+	var api = require( './apis/' + apiName + '.js' );
+
+	api.name = apiName;
+	api = this.extend( api );
+
+	return api;
+};
+
+module.exports.extend = function( api ) {
+
 	/**
-	 * See: http://www.devthought.com/2012/01/18/an-object-is-not-a-hash/
-	 * See: http://stackoverflow.com/a/1830844/102699
+	 * These are defined in Concierge, cannot be overridden by API
 	 */
-	return isNumeric(code) && codes[code] ? codes[code] :  "Unknown [status="+code+"]";
-}
-function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-exports.host = null;
-exports.headers = [];
-exports.result = getDefaultResult();
-exports.path = null;
-exports.query = null;
-exports.key = null;
-exports.data = null;
-exports.__fixup = function(request,response) {
-	this.path = request.url;
-	this.host = request.headers.host;
-}
-function fixupArgs( thing, key, data, callback ) {
-	if ( typeof key == 'function' ) {
-		callback = key;
-		key = {};
-		data = {};
-	} else if ( typeof key != 'object' ) {
-		key = {key:key};
-		if ( typeof data == 'function' ) {
-			callback = data;
-			data = {};
-		}
-	}
-	return {
-		thing: 		thing,
-		key: 			key,
-		data: 		data,
-		callback:	callback
-	}
-}
-/*
- * obj = $api.GET( "thing", key, data );
- * newobj = obj.GET( "another_thing", key, data );
- */
-exports.GET = function ( thing, key, data, callback ) {
-	var args = fixupArgs( thing, key, data, callback );
+	api.GET = 		this.GET;
+	api.PUT = 		this.PUT;
+	api.POST = 		this.POST;
+	api.DELETE = 	this.DELETE;
+	api.PATCH = 	this.PATCH;
+	api.NEW = 		this.NEW;
+	api.DO = 			this.DO;
+
+	/**
+	 * These might be defined in API's concierge, if not, default.
+	 */
+	if ( api.onServiceInit == undefined )
+		api.onServiceInit = this.onServiceInit;
+
+	if ( api.filterOutput == undefined )
+		api.filterOutput = this.filterOutput;
+
+	/**
+	 * Provide convenient access to these
+	 */
+	api.server = 		this.server;
+	api.request = 	this.request;
+	api.response = 	this.response;
+
+	/**
+	 * Provide convenient access to these
+	 */
+	api.code = 			this.code;
+	api.header = 		this.header;
+	api.location = 	this.location;
+
+
+	/**
+	 * Set some more convenience properties
+	 */
+	var hostParts = nodeRequest.headers.host.split(':');
+	api.host = hostParts[0];
+
+	if ( hostParts[1] != undefined )
+		api.port = Number(hostParts[1]);
+
+	api.out = this.out = function(value) {
+		nodeResponse.end(value);
+	};
+
+	/**
+	 * Provide reference back to root level $api object.
+	 */
+	api.root = this.root != undefined ? this.root : this;
+
+	return api;
 };
-/*
- * result = obj.PUT( "thing", data );
- * result = api.PUT( "thing", key, data );
- */
-exports.PUT = function ( thing, key, data, callback ) {
-	var args = fixupArgs( thing, key, data, callback );
-}
-/*
- * result = obj.POST( "thing", data );
- * result = api.POST( "thing", key, data );
- */
-exports.POST = function ( thing, key, data, callback ) {
-	var args = fixupArgs( thing, key, data, callback );
-}
-/*
- * result = obj.DELETE( "thing" );
- * result = api.DELETE( "thing", key );
- */
-exports.DELETE = function ( thing, key, data, callback ) {
-	var args = fixupArgs( thing, key, data, callback );
-}
-/*
- * result = obj.PATCH( "thing", data );
- * result = api.PATCH( "thing", key, data );
- */
-exports.PATCH = function ( thing, key, data, callback ) {
-	var args = fixupArgs( thing, key, data, callback );
-}
-/*
- * Same as api.POST( "thing/new" )
- * result = api.NEW( "thing", data );
- * result = api.NEW( "thing", data );
- */
-exports.NEW = function ( thing, key, data, callback ) {
-	var args = fixupArgs( thing, key, data, callback );
-};
+
 /*
  * Set HTTP status code
  */
-exports.code = function( code ) {
-	_code = code;
-	this.result = getDefaultResult();
-	this.result.code = code;
-	this.result.message = getHttpStatusMesssage( code );
+module.exports.code = function( code ) {
+	this.response = helper.getDefaultResponse();
+	this.response.code = code;
+	this.response.message = helper.getHttpStatusMesssage( code );
 	return code;
 };
 /*
  * Set HTTP status code
  */
-exports.location = function( uri, code ) {
+module.exports.location = function( uri, code ) {
 	this.header( "Location", uri );
 	this.code( code );
 };
 /*
- * Set HTTP status code
+ * Add a new header to the response object
  */
-exports.header = function( name, value ) {
-	this.headers.push( name + ": " + value );
+module.exports.header = function( name, value ) {
+	this.response.headers.push( name + ": " + value );
+};
+
+module.exports._setNodeArgs = function(request,response) {
+	nodeRequest = request;
+	nodeResponse = response;
+	return this;
+};
+
+/**
+ * @return object|null;
+ */
+module.exports.GET = function( thing, key, data, callback ) {
+	var args = helper.fixupArgs( thing, key, data, callback );
+
+	console.log( this.name + ':' + args.thing );
+
+	/**
+	 * Clone the service object
+	 */
+	var service  = JSON.parse(JSON.stringify(this.service));
+
+	/**
+	 * Clone get it's URLs.
+	 */
+	service.path += '/' + this.links[args.thing].path;
+
+	/**
+	 * Let the API's Concierge add any auth parameters or other weirdness required for their APIs
+	 */
+	this.onServiceInit(service);
+
+	console.log( 'Service Path: ' + this.service.path );
+
+	/**
+	 * Set by Master Concierge or API's Concierge, required to be 'http' or 'https'
+	 */
+	var protocol = require( this.protocol );
+
+	var output = '';
+
+	var host = this.host;
+	var concierge = this.root;
+	var $api = this;
+	var request = protocol.request(service,function(result) {
+
+		console.log(host + ': ' + result.statusCode);
+
+		result.setEncoding('utf8');
+
+		result.on('data', function(chunk) {
+			output += chunk;
+		});
+
+		result.on('end', function() {
+			/**
+			 * TODO: Don't assume out is only JSON here; add in Content-Type parsers instead.
+			 * @type {*}
+			 */
+			concierge.code(result.statusCode);
+			output = JSON.parse(output);
+			output = $api.filterOutput(output);
+			args.callback(JSON.stringify(output));
+			if ( ! nodeResponse.finished ) {
+				nodeResponse.end();
+			}
+		});
+
+	});
+	request.on('error', function(error) {
+		console.log('error: ' + error.message);
+	});
+
+	request.end();
+
+};
+/*
+ * result = thing.PUT( data );
+ * result = thing.PUT( key, data );
+ */
+module.exports.PUT = function ( key, data, onResult ) {
+	var args = helper.fixupArgs( key, data, onResult );
+};
+/*
+ * result = thing.POST( data );
+ * result = thing.POST( key, data );
+ */
+module.exports.POST = function ( key, data, onResult ) {
+	var args = helper.fixupArgs( key, data, onResult );
+};
+/*
+ * result = thing.DELETE( "thing" );
+ * result = thing.DELETE( key );
+ */
+module.exports.DELETE = function ( key, data, onResult ) {
+	var args = helper.fixupArgs( key, data, onResult );
+};
+/*
+ * result = thing.PATCH( data );
+ * result = thing.PATCH( key, data );
+ */
+module.exports.PATCH = function ( key, data, onResult ) {
+	var args = helper.fixupArgs( key, data, onResult );
+};
+/*
+ * Same as thing.POST( "thing/new" )
+ * result = thing.NEW( data );
+ */
+module.exports.NEW = function ( key, data, onResult ) {
+	var args = helper.fixupArgs( key, data, onResult );
+};
+/*
+ * Same as thing.POST( "thing/new" )
+ * result = thing.NEW( data );
+ */
+module.exports.DO = function ( action, data, onResult ) {
 };
