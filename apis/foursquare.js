@@ -22,7 +22,7 @@ module.exports.actions = {
 };
 
 module.exports.links = {
-	categories: {
+	'venue-categories': {
 		path: 'venues/categories',
 		access: 'app' // vs. 'user'
 	}
