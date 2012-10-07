@@ -12,6 +12,7 @@
 /**
  * Module local vars
  */
+var $api;
 var helper = require("./concierge-helper.js");
 var nodeRequest = null;
 var nodeResponse = null;
@@ -52,9 +53,11 @@ module.exports.load = function( apiName ) {
 
 	return api;
 };
-
+module.exports.localUrl = function( path ) {
+	var url = 'http://'+this.host+(this.port==80?'':':'+this.port) + '/'+path.replace(/^\/(.*)$/,'$');
+	return url;
+}
 module.exports.extend = function( api ) {
-
 	/**
 	 * These are defined in Concierge, cannot be overridden by API
 	 */
@@ -93,14 +96,28 @@ module.exports.extend = function( api ) {
 	/**
 	 * Set some more convenience properties
 	 */
+	api.protocol = 	this.protocol;
+
 	var hostParts = nodeRequest.headers.host.split(':');
 	api.host = hostParts[0];
 
 	if ( hostParts[1] != undefined )
 		api.port = Number(hostParts[1]);
 
+	api.localUrl = 	this.localUrl;
+	/**
+	 * Assign this so we can access it in file.createTempFile();
+	 * @type {*}
+	 */
+	$api = api;
+
 	api.out = this.out = function(value) {
-		nodeResponse.end(value);
+		var filePath = 'results/' + $api.called + '.json';
+		console.log( 'Write file: ./' + filePath );
+		require('fs').writeFileSync( './' + filePath, value );
+		var fileUrl = $api.localUrl( filePath );
+		nodeResponse.writeHead(302,{Location: fileUrl});
+		nodeResponse.end();
 	};
 
 	/**
@@ -174,6 +191,7 @@ module.exports.GET = function( thing, key, data, callback ) {
 
 	var host = this.host;
 	var concierge = this.root;
+	this.called = thing;
 	var $api = this;
 	var request = protocol.request(service,function(result) {
 

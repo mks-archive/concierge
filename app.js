@@ -1,5 +1,6 @@
 var helper = require("./concierge-helper.js");
 var http = require('http');
+var fs = require('http');
 
 helper.demoApiName = 'foursquare';
 
@@ -9,7 +10,7 @@ helper.demoApiName = 'foursquare';
  * fundamental architecture issues worked out.
  */
 function writeOutputForm(response, params) {
-	var fs = require('fs');
+	fs = require('fs');
 
 	fs.readFile('./form.html', function(err, form) {
 		if (err) {
@@ -46,10 +47,30 @@ server.on('request', function (request, response) {
 			});
 			break;
 
+		case 'GET/results':
+			fs = require('fs');
+			var filePath = './results/'+ urlParts[2];
+			if (fs.existsSync(filePath)) {
+				var json = require('fs').readFileSync(filePath).toString();
+				/**
+				 * DAMN you chunkedEncoding, you caused me a lot of headache to figure out.
+				 */
+				response.chunkedEncoding = false;
+				response.writeHead( 200, {
+					'Content-Length': json.length,
+					'Content-Type': 'application/json'
+				});
+				response.write( json );
+			} else {
+				response.statusCode = 404;
+			}
+			response.end();
+			break;
+
 		case 'GET/examples':
 			var concierge = require('./concierge.js')._setNodeArgs(request, response);
 			var $api = concierge.load(urlParts[2]);
-			var fs = require('fs');
+			fs = require('fs');
 			$api.credentials = helper.loadCredentials(urlParts[2]);
 			var codeToRun = helper.loadExampleCode(urlParts[2],urlParts[3]);
 			var result = require("./runner.js").run($api,codeToRun);
@@ -87,7 +108,15 @@ server.on('request', function (request, response) {
 					require("./runner.js").run($api, apiName, codeToRun);
 
 				} catch (err) {
-					response.end("Unknown error.");
+					response.write("ERROR: ");
+					var msg = err.message + ' [' + err.type + ']:\n';
+					for(var i=0;i<err.arguments.length;i++){
+						msg+= '\targuments['+i+'] = "' + err.arguments[i] + '"';
+						if ( i<err.arguments.length-1) {
+							msg+= ',\n';
+						}
+					}
+					response.end(msg);
 				}
 
 				//writeOutputForm(response, query);
