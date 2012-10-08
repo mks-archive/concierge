@@ -14,7 +14,7 @@ exports.run = function($api, api, script) {
 	"use strict";
 
 	var result = '';
-//	var error = checkForSyntaxError(jsCode);
+//	var error = checkForSyntaxError(script);
 	var error = null;
 
 	if (!error) {
@@ -22,7 +22,7 @@ exports.run = function($api, api, script) {
 			if ('127.0.0.1' == $api.host) {
 				result = eval(script);
 			} else {
-				result = vm.runInNewContext(jsCode, {"$api": $api}).toString();
+				result = vm.runInNewContext(script, {"$api": $api}).toString();
 			}
 		} catch (error) {
 			console.log( 'JAVASCRIPT SYNTAX ERROR: ');
