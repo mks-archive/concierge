@@ -150,7 +150,7 @@ While we intend for the Concierge Script to be frozen as a specification we expe
 
 Think of Concierge as a _(__psuedo-_)interactive API language/platform.  Think of it analogous to [Yahoo Pipes](http://pipes.yahoo.com/pipes/) and/or [IFTTT](htts://ifttt.com/) but with an actual programming language for glue between the feeds and APIs.
 
-Think of Concierge as being a standard glue that companies [Apigee](http://apigee.com/about/) and [Mashape](http://www.mashape.com) could potentially adopt and support.
+Think of Concierge as being a standard glue that companies like [Apigee](http://apigee.com/about/) and [Mashape](http://www.mashape.com) could potentially adopt and support.
 
 ##Envisioned Benefits of Concierge
 
