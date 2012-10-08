@@ -1,11 +1,6 @@
 /**
  * Concierge - A Node.js solution for using code-on-demand for a RESTful server.
  * API specific modules must set these
- * @type {Object}
- *
- * 	module.exports.credentials = {};
- * 	module.exports.service = {};
- * 	module.exports.links = {};
  *
  */
 
@@ -23,10 +18,23 @@ var nodeResponse = null;
 module.exports.root;
 module.exports.name = '$api';
 module.exports.version = '0.0';
+
+/**
+ * This protocol is for the Concierge to access it's API, not the protocol someone would access Concierge with.
+ */
 module.exports.protocol = 'https';
 module.exports.server = {};
 module.exports.request = {};
-module.exports.response = helper.getDefaultResponse();
+module.exports.response = {
+	code:200,
+	message:"",
+	status:"success",
+	data:{}
+}
+
+/**
+ * TODO: Decide how we need to work with result, of if we can get rid of it;
+ */
 module.exports.result = {};
 
 module.exports.onServiceInit = function(service){};
@@ -54,8 +62,7 @@ module.exports.load = function( apiName ) {
 	return api;
 };
 module.exports.localUrl = function( path ) {
-	var url = 'http://'+this.host+(this.port==80?'':':'+this.port) + '/'+path.replace(/^\/(.*)$/,'$');
-	return url;
+	return 'http://'+this.host+(this.port==80?'':':'+this.port) + '/'+path.replace(/^\/(.*)$/,'$');
 }
 module.exports.extend = function( api ) {
 	/**
@@ -90,8 +97,6 @@ module.exports.extend = function( api ) {
 	 */
 	api.code = 			this.code;
 	api.header = 		this.header;
-	api.location = 	this.location;
-
 
 	/**
 	 * Set some more convenience properties
@@ -114,7 +119,7 @@ module.exports.extend = function( api ) {
 	api.out = this.out = function(value) {
 		var filePath = 'results/' + $api.called + '.json';
 		console.log( 'Write file: ./' + filePath );
-		require('fs').writeFileSync( './' + filePath, value );
+		require('fs').writeFileSync( './' + filePath, JSON.stringify(value) );
 		var fileUrl = $api.localUrl( filePath );
 		nodeResponse.writeHead(302,{Location: fileUrl});
 		nodeResponse.end();
@@ -132,17 +137,9 @@ module.exports.extend = function( api ) {
  * Set HTTP status code
  */
 module.exports.code = function( code ) {
-	this.response = helper.getDefaultResponse();
 	this.response.code = code;
 	this.response.message = helper.getHttpStatusMesssage( code );
 	return code;
-};
-/*
- * Set HTTP status code
- */
-module.exports.location = function( uri, code ) {
-	this.header( "Location", uri );
-	this.code( code );
 };
 /*
  * Add a new header to the response object
@@ -211,7 +208,7 @@ module.exports.GET = function( thing, key, data, callback ) {
 			concierge.code(result.statusCode);
 			output = JSON.parse(output);
 			output = $api.filterOutput(output);
-			args.callback(JSON.stringify(output));
+			args.callback(output);
 			if ( ! nodeResponse.finished ) {
 				nodeResponse.end();
 			}
