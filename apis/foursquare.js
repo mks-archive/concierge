@@ -1,7 +1,7 @@
-
-//var fs = $api.create('foursquare');
-//var user = fs.GET("user", 123 );
-//user.GET("badges");
+/**
+ * Concierge for Foursquare v2 API
+ * VERY PRELIMINARY, only covers one (1) of probably 100 services.
+ */
 
 var date = '20121006';  // Date we coded this so we no the 4sq API worked on that date.
 
