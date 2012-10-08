@@ -117,12 +117,17 @@ module.exports.extend = function( api ) {
 	$api = api;
 
 	api.out = this.out = function(value) {
-		var filePath = 'results/' + $api.called + '.json';
-		console.log( 'Write file: ./' + filePath );
-		require('fs').writeFileSync( './' + filePath, JSON.stringify(value) );
-		var fileUrl = $api.localUrl( filePath );
-		nodeResponse.writeHead(302,{Location: fileUrl});
-		nodeResponse.end();
+		if ('concierge.jit.su' == $api.host) {
+			nodeResponse.writeHead(200,{'Content-type':'application/json'});
+			nodeResponse.end(JSON.stringify(value));
+		} else {
+			var filePath = 'results/' + $api.called + '.json';
+			console.log( 'Write file: ./' + filePath );
+			require('fs').writeFileSync( './' + filePath, JSON.stringify(value) );
+			var fileUrl = $api.localUrl( filePath );
+			nodeResponse.writeHead(302,{Location: fileUrl});
+			nodeResponse.end();
+		}
 	};
 
 	/**
