@@ -24,7 +24,7 @@ exports.run = function($api, api, script) {
 			} else {
 				result = vm.runInNewContext(jsCode, {"$api": $api}).toString();
 			}
-		} catch (err) {
+		} catch (error) {
 			console.log( 'JAVASCRIPT SYNTAX ERROR: ');
 			console.log( error );
 			$api.out('ERROR, see console log.' );
