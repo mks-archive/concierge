@@ -1,24 +1,3 @@
-module.exports.demoApiName = null;
-
-module.exports.loadCredentials = function( appName ) {
-	var line,lines = require('fs').readFileSync('./examples/'+appName+'/credentials.txt').toString().trim().split("\n");
-	var credentials = {};
-	for(var i=0; i<lines.length; i++) {
-		line = lines[i].split(':');
-		credentials[line[0].trim()] = line[1].trim();
-	}
-	return credentials;
-};
-module.exports.loadExampleCode = function(appName,service) {
-	return require('fs').readFileSync('./examples/'+appName+'/'+service+'.js').toString().trim();
-}
-module.exports.getDefaultResponse = function() {
-	return {
-		code:200,
-		message:"",
-		status:"success",
-		data:{} }
-};
 
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
@@ -67,12 +46,3 @@ module.exports.fixupArgs = function( thing, key, data, callback ) {
 		callback:	callback
 	}
 };
-
-// DECIDE if we want
-//exports.host = null;
-//exports.headers = [];
-//exports.path = null;
-//exports.query = null;
-//exports.key = null;
-//exports.data = null;
-//
