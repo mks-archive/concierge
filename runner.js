@@ -22,7 +22,7 @@ exports.run = function($api, api, script) {
 			if ('127.0.0.1' == $api.host) {
 				result = eval(script);
 			} else {
-				result = vm.runInNewContext(script, {"$api": $api}).toString();
+			result = vm.runInNewContext(script, {"$api": $api});
 			}
 		} catch (error) {
 			console.log( 'JAVASCRIPT SYNTAX ERROR: ');
