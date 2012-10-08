@@ -131,7 +131,7 @@ If you are a Node.js expert and can recommend improvement _(that doesn't conflic
 ###The Server as a Generic Concierge Script Sandbox
 Although Concierge is currently implemented using Node.js it can theoretically be hosted using any web container capable of executing a Concierge Script in a appropriate sandbox.
 
-We envision and would love to see Concierge Servers running as Python Eggs, Ruby Gems, PHP scripts, in a .NET server maybe in [Azure](http://www.windowsazure.com/en-us/); anything that can hosts the [http://code.google.com/p/v8/](Google V8 Javascript engine) or any other current or future Javascript engine equivalent.
+We envision and would love to see Concierge Servers running as Python Eggs, Ruby Gems, PHP scripts, in a .NET server maybe in [Azure](http://www.windowsazure.com/en-us/); anything that can hosts the [Google V8 Javascript engine](http://code.google.com/p/v8/) or any other current or future Javascript engine equivalent.
 
 ###Client-side Concierge
 We can even envision Concierge Servers being able to be run in the browsers so that client-side developers could share Concierge Scripts for client-side development for those who don't or cannot use Concierge as a proxy server.
