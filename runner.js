@@ -10,7 +10,7 @@ var vm = require("vm");
  * 	https://npmjs.org/package/funex
  *
  */
-exports.run = function($api, apiName, jsCode) {
+exports.run = function($api, api, script) {
 	"use strict";
 
 	var result = '';
@@ -18,16 +18,16 @@ exports.run = function($api, apiName, jsCode) {
 	var error = null;
 
 	if (error) {
-		result = 'JAVASCRIPT SYNTAX ERROR[' + apiName +']: ' + error;
+		result = 'JAVASCRIPT SYNTAX ERROR[' + api +']: ' + error;
 	} else {
 		try {
 			if ('127.0.0.1' == $api.host) {
-				result = eval(jsCode);
+				result = eval(script);
 			} else {
 				result = vm.runInNewContext(jsCode, {"$api": $api}).toString();
 			}
 		} catch (error) {
-			$api.end(result = 'JAVASCRIPT RUNTIME ERROR[' + apiName +']: ' + error.type);
+			$api.end(result = 'JAVASCRIPT RUNTIME ERROR[' + api +']: ' + error.type);
 		}
 	}
 	return result;
