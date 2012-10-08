@@ -33,7 +33,6 @@ function writeOutputForm(response, params) {
 var server = http.createServer();
 
 server.on('request', function (request, response) {
-	console.log('Got a hit.');
 
 	response.writeHead(200, "OK", {'Content-Type':'text/html'});
 
@@ -82,7 +81,7 @@ server.on('request', function (request, response) {
 			var reply = '';
 
 			request.on('data', function (chunk) {
-				console.log("Received body data: " + chunk.toString());
+				//console.log("Received body data: " + chunk.toString());
 
 				reply += chunk.toString();
 			});

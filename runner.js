@@ -17,17 +17,17 @@ exports.run = function($api, api, script) {
 //	var error = checkForSyntaxError(jsCode);
 	var error = null;
 
-	if (error) {
-		result = 'JAVASCRIPT SYNTAX ERROR[' + api +']: ' + error;
-	} else {
+	if (!error) {
 		try {
 			if ('127.0.0.1' == $api.host) {
 				result = eval(script);
 			} else {
 				result = vm.runInNewContext(jsCode, {"$api": $api}).toString();
 			}
-		} catch (error) {
-			$api.out(result = 'JAVASCRIPT RUNTIME ERROR[' + api +']: ' + error.type);
+		} catch (err) {
+			console.log( 'JAVASCRIPT SYNTAX ERROR: ');
+			console.log( error );
+			$api.out('ERROR, see console log.' );
 		}
 	}
 	return result;
