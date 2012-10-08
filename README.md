@@ -6,6 +6,8 @@ Concierge is designed to be a universal client SDK that works across all platfor
 
 **Concierge envisions itself as a companion to a REST API**, not an alternative. Concierge was designed to work as a layer on top of a REST API that is optional at the _per request level_.  Our goal is for Concierge to become a defacto-standard optional method of interacting with RESTful APIs and is appropriately open-source. _(Who knows, maybe we'll even spawn an [RFC](http://en.wikipedia.org/wiki/Request_for_Comments)?)_
 
+##License
+This project is released under the [MIT License](https://github.com/newclarity/concierge/blob/master/license.txt).
 
 ##Targeted Users
 
