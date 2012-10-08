@@ -1,6 +1,6 @@
 
 # Concierge
-**_Universal Client for RESTful APIs_**
+**_A Node.js-based Universal Client for RESTful APIs_**
 
 Concierge is designed to be a universal client SDK that works across all platforms by leveraging [code-on-demand](http://bitworking.org/news/355/code-on-demand-rest-and-cloud-computing) but in reverse; the API client sends code to the API server, in this case a _Concierge Server_.
 
