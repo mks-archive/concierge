@@ -1,4 +1,4 @@
-var helper = require("./concierge-helper.js");
+var helper = require("./app-helper.js");
 var http = require('http');
 var fs = require('http');
 
@@ -19,12 +19,12 @@ function writeOutputForm(response, params) {
 
 		var html = form.toString();
 
-		if (params.hasOwnProperty('js_code') ) {
-			html = html.replace("{js_code}", params.js_code);
+		if (params.hasOwnProperty('script') ) {
+			html = html.replace("{script}", params.script);
 		}
 
-		if (params.hasOwnProperty('api_name') ) {
-			html = html.replace("{api_name}", params.api_name);
+		if (params.hasOwnProperty('api') ) {
+			html = html.replace("{api}", params.api);
 		}
 		response.end(html);
 	});
@@ -42,8 +42,8 @@ server.on('request', function (request, response) {
 	switch (request.method + '/' + urlParts[1]) {
 		case 'GET/':
 			writeOutputForm( response, {
-				api_name: helper.demoApiName,
-				js_code: helper.loadExampleCode('demo',helper.demoApiName)
+				api: helper.demoApiName,
+				script: helper.loadExampleCode('demo',helper.demoApiName)
 			});
 			break;
 
@@ -73,7 +73,7 @@ server.on('request', function (request, response) {
 			fs = require('fs');
 			$api.credentials = helper.loadCredentials(urlParts[2]);
 			var codeToRun = helper.loadExampleCode(urlParts[2],urlParts[3]);
-			var result = require("./runner.js").run($api,codeToRun);
+			var result = require("./runner.js").run($api,urlParts[2],codeToRun);
 			if ( typeof result == 'string' )
 				concierge.out( result );
 			break;
@@ -95,13 +95,13 @@ server.on('request', function (request, response) {
 
 					var query = queryString.parse(reply);
 
-					var codeToRun = query.js_code.trim();
-					var apiName = query.api_name.trim();
+					var codeToRun = query.script.trim();
+					var apiName = query.api.trim();
 
 					var $api = concierge.load(apiName);
 
 					/**
-					 * Credentials need to be able to be loaded from either POST or embedded in js_code
+					 * Credentials need to be able to be loaded from either POST or embedded in script
 					 */
 					$api.credentials = helper.loadCredentials(apiName);
 
