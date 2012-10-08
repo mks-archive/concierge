@@ -27,7 +27,7 @@ exports.run = function($api, api, script) {
 				result = vm.runInNewContext(jsCode, {"$api": $api}).toString();
 			}
 		} catch (error) {
-			$api.end(result = 'JAVASCRIPT RUNTIME ERROR[' + api +']: ' + error.type);
+			$api.out(result = 'JAVASCRIPT RUNTIME ERROR[' + api +']: ' + error.type);
 		}
 	}
 	return result;
