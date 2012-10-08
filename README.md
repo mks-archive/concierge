@@ -6,9 +6,6 @@ Concierge is designed to be a universal client SDK that works across all platfor
 
 **Concierge envisions itself as a companion to a REST API**, not an alternative. Concierge was designed to work as a layer on top of a REST API that is optional at the _per request level_.  Our goal is for Concierge to become a defacto-standard optional method of interacting with RESTful APIs and is appropriately open-source. _(Who knows, maybe we'll even spawn an [RFC](http://en.wikipedia.org/wiki/Request_for_Comments)?)_
 
-##License
-This project is released under the [MIT License](https://github.com/newclarity/concierge/blob/master/license.txt).
-
 ##Targeted Users
 
 We envision Concierge benefiting the following types of people:
@@ -218,9 +215,10 @@ While the rest-discuss list is mostly oriented toward discussion of REST purity 
 
 **REST Purists** promote hypermedia by saying it:
 
-1. **Reduces coupling** between API client and API server and permits each to evolve independently of the other
-2. **Minimizes fragility** of tightly coupled systems, and
-3. Argue that hypermedia **enables very long-lived systems**.
+1. **Reduces coupling** between API client and API server and permits each to evolve independently of each other
+2. **Minimizes fragility** of tightly coupled systems,
+3. Enables **very long-lived systems**, and
+4. Provides **service discoverability** based on the links made available.
 
 On the other hand, while **REST Pragmatists** typically agree with the benefits of hypermedia in theory they argue that the benefits come at too high a cost in practice because:
 
@@ -231,7 +229,7 @@ On the other hand, while **REST Pragmatists** typically agree with the benefits 
 
 Given this tension between the two REST camps where both sides have  compelling arguments the idea of Concierge emerged as a potential way to bridge the gap between the two.
 
-The initial coding for Concierge was done by [Mike Schinkel](http://about.me/mikeschinkel) at [HackGT on October 5th and 6th, 2012](http://hackgt.georgiatechtes.com). We will see how it goes, wish us luck!
+The initial coding for Concierge was done by [Mike Schinkel](http://about.me/mikeschinkel) at [HackGT](http://hackgt.georgiatechtes.com) on [October 5th and 6th, 2012](http://atlantastartupcommunity.wordpress.com/2012/10/06/hack-a-thons-the-lifeblood-of-atlantas-startup-community/). We will see how it goes, wish us luck!
 
 ##Future? Contributions and/or Sponsorship
 
@@ -242,3 +240,7 @@ If you are a developer interested in the Concierge idea and want to push it forw
 
 ###Organizations
 if you are part of an organization that can envision Concierge benefitting you strategically, [contact Mike Schinkel](http://about.me/mikeschinkel) and let him know that you'd like to sponsor additional development on Concierge.
+
+##License
+This project is released under the [MIT License](https://github.com/newclarity/concierge/blob/master/license.txt).
+
