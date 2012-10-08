@@ -62,7 +62,7 @@ module.exports.load = function( apiName ) {
 	return api;
 };
 module.exports.localUrl = function( path ) {
-	return 'http://'+this.host+(this.port==80?'':':'+this.port) + '/'+path.replace(/^\/(.*)$/,'$');
+	return 'http://'+this.host+(this.port==80?'':':'+this.port)+'/'+path.replace(/^\/(.*)$/,'$');
 }
 module.exports.extend = function( api ) {
 	/**
@@ -106,8 +106,7 @@ module.exports.extend = function( api ) {
 	var hostParts = nodeRequest.headers.host.split(':');
 	api.host = hostParts[0];
 
-	if ( hostParts[1] != undefined )
-		api.port = Number(hostParts[1]);
+	api.port = hostParts.length == 1 ? 80 : Number(hostParts[1]);
 
 	api.localUrl = 	this.localUrl;
 	/**
@@ -117,17 +116,17 @@ module.exports.extend = function( api ) {
 	$api = api;
 
 	api.out = this.out = function(value) {
-		if ('concierge.jit.su' == $api.host) {
-			nodeResponse.writeHead(200,{'Content-type':'application/json'});
-			nodeResponse.end(JSON.stringify(value));
-		} else {
+//		if ('Direct output from POST') {
+//			nodeResponse.writeHead(200,{'Content-type':'application/json'});
+//			nodeResponse.end(JSON.stringify(value));
+//		} else {
 			var filePath = 'results/' + $api.called + '.json';
 			console.log( 'Write file: ./' + filePath );
 			require('fs').writeFileSync( './' + filePath, JSON.stringify(value) );
 			var fileUrl = $api.localUrl( filePath );
 			nodeResponse.writeHead(302,{Location: fileUrl});
 			nodeResponse.end();
-		}
+//		}
 	};
 
 	/**
