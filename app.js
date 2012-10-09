@@ -1,6 +1,6 @@
 var helper = require("./app-helper.js");
 var http = require('http');
-var fs = require('http');
+var fs = require('fs');
 
 helper.demoApiName = 'foursquare';
 
