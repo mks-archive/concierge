@@ -10,7 +10,7 @@ var vm = require("vm");
  * 	https://npmjs.org/package/funex
  *
  */
-exports.run = function($api, api, script) {
+exports.run = function($api, script) {
 	"use strict";
 
 	var result = '';

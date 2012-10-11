@@ -72,7 +72,7 @@ server.on('request', function (request, response) {
 			fs = require('fs');
 			$api.credentials = helper.loadCredentials(urlParts[2]);
 			var codeToRun = helper.loadExampleCode(urlParts[2],urlParts[3]);
-			var result = require("./runner.js").run($api,urlParts[2],codeToRun);
+			var result = require("./runner.js").run($api,codeToRun);
 			if ( typeof result == 'string' )
 				concierge.out( result );
 			break;
@@ -104,7 +104,7 @@ server.on('request', function (request, response) {
 					 */
 					$api.credentials = helper.loadCredentials(apiName);
 
-					require("./runner.js").run($api, apiName, codeToRun);
+					require("./runner.js").run($api,codeToRun);
 
 				} catch (err) {
 					response.write("ERROR: ");
