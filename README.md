@@ -11,7 +11,7 @@ We envision Concierge benefiting the following types of people:
 
 1. **Web Professional, Power Users and Occupational Programmers accessing APIs** for real-world needs who cannot afford to invest the time required to program against typical APIs.
 
-2. **Professional Developers building hypermedia-based APIs** who want to simplify the requirements discovery process required when architecting the meta data and content type structure for a hypermedia API.
+2. **Professional Developers building Hypermedia-based APIs** who want to simplify the requirements discovery process required when architecting the meta data and content type structure for a hypermedia API.
 
 3. **Professional Developers writing API Clients** that need to navigate many links during a single API interaction which can be especially useful for mobile developers who want to push work to a server and issue a single API call.
 
