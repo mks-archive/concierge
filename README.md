@@ -9,11 +9,12 @@ Concierge is designed to be a universal client SDK that works across all platfor
 
 We envision Concierge benefiting the following types of people:
 
-1. **Professional Developers writing API Clients** that need to navigate many links during a single API interaction which can be especially useful for mobile developers who want to push work to a server and issue a single API call.
+1. **Web Professional, Power Users and Occupational Programmers accessing APIs** for real-world needs who cannot afford to invest the time required to programm against typical APIs.
 
 2. **Professional Developers building hypermedia-based APIs** who want to simplify the requirements discovery process required when architecting the meta data and content type structure for a hypermedia API.
 
-3. **Web Professional, Power Users and Occupational Programmers accessing APIs** for real-world needs who cannot afford to invest the time required to programm against typical APIs.
+3. **Professional Developers writing API Clients** that need to navigate many links during a single API interaction which can be especially useful for mobile developers who want to push work to a server and issue a single API call.
+
 
 ## Concierge Concepts
 
