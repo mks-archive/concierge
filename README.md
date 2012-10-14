@@ -28,7 +28,7 @@ A _Concierge Script_ is a Javascript designed to be run on a Concierge Server. A
 ### A Highly Constrained `$api` Object
 Concierge Scripts are designed to be highly constrained, just like [REST](http://en.wikipedia.org/wiki/Representational_state_transfer). A Concierge Script would be written in sandboxed Javascript and have access to a single global object named `$api` with methods `GET`, `PUT`, `POST`, `PATCH`, `DELETE` and `NEW`, the latter being a well-known special case of `POST` _(which we may decide to remove if we get mostly negative feedback on the idea of `NEW`.)_
 
-The `$api` object also have a minumum number or other properties and methods such as `request`, `response` and `server` as well as `header()`, `code()` and `out()` and probably a few more. The final list will be what we discover is minimimally required for real-world use-cases, and nothing more.
+The `$api` object also has a minumum number or other properties and methods such as `request`, `response` and `server` as well as `header()`, `code()` and `out()` and probably a few more. The final list will be what we discover is minimimally required for real-world use-cases, and nothing more.
 
 ### Example: Foursquare Venue Categories
 At it's simplest here's a Concierge script that calls the [FourSquare's v2 API](http://developer.foursquare.com) to get a [list of venue categories](https://developer.foursquare.com/docs/venues/categories). This takes a much larger list of categories and returns just the top level categories but as an object instead of an array so each category can accessed by category ID, i.e. `categories['4d4b7104d754a06370d81259']`:
@@ -72,7 +72,7 @@ Here is what the [Concierge for Foursquare v2](http://github.com/newclarity/conc
      * VERY PRELIMINARY, only covers one (1) of probably 100 services.
      */
 
-    var date = '20121006';  // Date we coded this so we no the 4sq API worked on that date.
+    var date = '20121006';  // Date we coded this so we know the 4sq API worked on that date.
 
     module.exports.protocol = 'http';
 
@@ -221,12 +221,12 @@ While the rest-discuss list is mostly oriented toward discussion of REST purity 
 
 On the other hand, while **REST Pragmatists** typically agree with the benefits of hypermedia in theory they argue that the benefits come at too high a cost in practice because:
 
-1. There is **no concensus on hypermedia media types** among REST advocates,
+1. There is **no consensus on hypermedia media types** among REST advocates,
 2. **Few examples in the wild** of successful hypermedia-based APIs,
 3. There are **very few client libraries**  to simplify hypermedia-based API access, and none with any significant adoption, and
-4. They question if hypermedia's **benefits of are not dubious** because control information still needs to be coupled and the only well-known use-case for hypermedia are web pages and feeds (other?) both of which are navigated by humans vs. machines.
+4. They question if hypermedia's **benefits are not dubious** because control information still needs to be coupled and the only well-known use-case for hypermedia are web pages and feeds (other?) both of which are navigated by humans vs. machines.
 
-Given this tension between the two REST camps where both sides have  compelling arguments the idea of Concierge emerged as a potential way to bridge the gap between the two.
+Given this tension between the two REST camps where both sides have compelling arguments the idea of Concierge emerged as a potential way to bridge the gap between the two.
 
 The initial coding for Concierge was done by [Mike Schinkel](http://about.me/mikeschinkel) at [HackGT](http://hackgt.georgiatechtes.com) on [October 5th and 6th, 2012](http://atlantastartupcommunity.wordpress.com/2012/10/06/hack-a-thons-the-lifeblood-of-atlantas-startup-community/). We will see how it goes, wish us luck!
 
@@ -242,4 +242,3 @@ if you are part of an organization that can envision Concierge benefitting you s
 
 ##License
 This project is released under the [MIT License](https://github.com/newclarity/concierge/blob/master/license.txt).
-
