@@ -1,6 +1,6 @@
 # Concierge
 <div style="float:right;width:252;">
-<img alt="Photo of Concierge Sign by Kin Lane" height="343" width="250" src="/photos/concierge-sign-by-kin-lane.jpg?raw=true" />
+<img alt="Photo of Concierge Sign by Kin Lane" height="343" width="250" src="photos/concierge-sign-by-kin-lane.jpg?raw=true" />
 <p style="text-align:center;">Photo by <a href="https://twitter.com/kinlane">Kin Lane</a> of <a href="http://apievangelist.com">API Evangelist</a> while at <a href="http://www.twilio.com/conference">twilioCON 2012</a>.</p>
 </div>
 **_A Node.js-based Universal Client for RESTful APIs_**
