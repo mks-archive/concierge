@@ -1,5 +1,5 @@
 # Concierge
-<img alt="Photo of Concierge Sign by Kin Lane" height="343" width="250" src="https://raw.github.com/newclarity/concierge/master/photos/concierge-sign-by-kin-lane.jpg" align="right" />
+<img alt="Photo of Concierge Sign by Kin Lane" height="309" width="225" src="https://raw.github.com/newclarity/concierge/master/photos/concierge-sign-by-kin-lane.jpg" align="right" />
 **_A Node.js-based Universal Client for RESTful APIs_**
 
 Concierge is designed to be a universal client SDK that works across all platforms by leveraging [code-on-demand](http://bitworking.org/news/355/code-on-demand-rest-and-cloud-computing) but in reverse; the API client sends code to the API server, in this case a _Concierge Server_.
