@@ -1,14 +1,12 @@
 # Concierge
-<div style="float:right;width:252;">
-<img alt="Photo of Concierge Sign by Kin Lane" height="343" width="250" src="photos/concierge-sign-by-kin-lane.jpg?raw=true" />
-<p style="text-align:center;">Photo by <a href="https://twitter.com/kinlane">Kin Lane</a> of <a href="http://apievangelist.com">API Evangelist</a> while at <a href="http://www.twilio.com/conference">twilioCON 2012</a>.</p>
-</div>
+<img alt="Photo of Concierge Sign by Kin Lane" height="343" width="250" src="https://raw.github.com/newclarity/concierge/master/photos/concierge-sign-by-kin-lane.jpg" align="right" />
 **_A Node.js-based Universal Client for RESTful APIs_**
 
 Concierge is designed to be a universal client SDK that works across all platforms by leveraging [code-on-demand](http://bitworking.org/news/355/code-on-demand-rest-and-cloud-computing) but in reverse; the API client sends code to the API server, in this case a _Concierge Server_.
 
 **Concierge envisions itself as a companion to a REST API**, not an alternative. Concierge was designed to work as a layer on top of a REST API that is optional at the _per request level_.  Our goal is for Concierge to become a defacto-standard optional method of interacting with RESTful APIs and is appropriately open-source. _(Who knows, maybe we'll even spawn an [RFC](http://en.wikipedia.org/wiki/Request_for_Comments)?)_
 
+Photo by [Kin Lane](https://twitter.com/kinlane) of [API Evangelist](http://apievangelist.com) while at [twilioCON 2012](http://www.twilio.com/conference).
 ##Targeted Users
 
 We envision Concierge benefiting the following types of people:
