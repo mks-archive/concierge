@@ -21,8 +21,8 @@ We envision Concierge benefiting the following types of people:
 ## Concierge Concepts
 
 - **Concierge Scripts**
-- **The API-specific module; _"A Concierge"_**
-- **The Concierge Server**
+- **Concierge Candidates**
+- **Concierge Servers**
 
 ##Concierge Scripts
 
@@ -63,15 +63,15 @@ Here's what the data the above Concierge returns might look like:
 ### Goal: Concierge Scripts to be a Frozen Specification
 Ideally the Concierge Script and its `$api` object will not be a moving target after we complete a version 1.0. The concept is to craft the smallest interface that would be usable in real-world scenarios and then freeze the spec at version 1.0 much like HTTP/1.1 has been frozen for years.
 
-##The API-specific Module; The Concierge
+##Concierge Candidates
 
-A _"Concierge"_ is a module for consuming a specific API. Building a Concierge is similar to the discovery process for architecting a hypermedia-based API, but with a bit of client SDK architecture thrown in for good measure.
+A _"Concierge Candidate"_ is a module for consuming a specific API. Building a Concierge Candidate is similar to the discovery process for architecting a hypermedia-based API, but with a bit of client SDK architecture thrown in for good measure.
 
-###Foursquare's v2 API as a Concierge
+###Foursquare's v2 API as a Concierge Candidate
 Here is what the [Concierge for Foursquare v2](http://github.com/newclarity/concierge/blob/master/apis/foursquare.js) looks like based on FourSquare's v2 API _(this is very rough; it is only the first iteration of our proof of concept):_
 
     /**
-     * Concierge for Foursquare v2 API
+     * Concierge Candidate for Foursquare v2 API
      * VERY PRELIMINARY, only covers one (1) of probably 100 services.
      */
 
@@ -109,21 +109,21 @@ Here is what the [Concierge for Foursquare v2](http://github.com/newclarity/conc
       service.path += '?client_id=' + auth.client_id + '&client_secret=' + auth.client_secret + '&v=' + date;
     };
 
-###Concierges for Hypermedia-Specific Content-Types
-We also envision people being able to build different Concierges that each work with a different hypermedia-specific content type. For example we envision it will be possible to create a Concierge for any or all of the following that could allow a Concierge Script to interact with any hypermedia API that uses them, such as these and others:
+###Concierge Candidates for Hypermedia-Specific Content-Types
+We also envision people being able to build different Concierge Candidates that each work with a different hypermedia-specific content type. For example we envision it will be possible to create a Concierge for any or all of the following that could allow a Concierge Script to interact with any hypermedia API that uses them, such as these and others:
 
 - [**Siren**](http://github.com/kevinswiber/siren#readme)
 - [**HAL**](http://stateless.co/hal_specification.html)
 - [**Collection+JSON**](http://amundsen.com/media-types/collection/)
 - [**oData Lite**](http://skydrive.live.com/?cid=0d23ed2816deea7b&id=D23ED2816DEEA7B%21966)
 
-##The Concierge Server
+##Concierge Servers
 
-Concierge Scripts will be run by a **_Concierge Server_** and in concept a Concierge server could be hosted as an API proxy, locally as part of your client SDK, or ideally side-by-side with the API server by the providers of the API. Theoretically a Concierge Script could run anywhere. You could potentially have numerous Concierge servers in parallel and/or in series as a way to offload API processing from the client and yet maintain the purity of the RESTful API.
+Concierge Scripts will be run by a **_Concierge Server_** and in concept a Concierge Server could be hosted as an API proxy, locally as part of your client SDK, or ideally side-by-side with the API server by the providers of the API. Theoretically a Concierge Script could run anywhere. You could potentially have numerous Concierge servers in parallel and/or in series as a way to offload API processing from the client and yet maintain the purity of the RESTful API.
 
 ###Technology: Currently Node.js
 
-The current Concierge code has been implemented using [Node.js](http://nodejs.org) and the [ current demo](http://concierge.jit.su) is hosted on [Nodejistu](http://nodejitsu.com) at [concierge.jit.su](http://concierge.jit.su) _(and it **may or may not** be working at the time you read this)_. This demo is far from impressive; it is what it is at this point. We can always improve it later. :)
+The current code for Concierge is implemented using [Node.js](http://nodejs.org) and the [ current demo](http://concierge.jit.su) is hosted on [Nodejistu](http://nodejitsu.com) at [concierge.jit.su](http://concierge.jit.su) _(and it **may or may not** be working at the time you read this)_. This demo is far from impressive; it is what it is at this point. We can always improve it later. :)
 
 It's our team's first stab at a Node.js app so we're probably doing a tremendous amount wrong. I'm sure I'm doing a lot wrong. But that can be improved.  But as programmers we all know that kind of disclaimer.
 
@@ -134,7 +134,7 @@ Although Concierge is currently implemented using Node.js it can theoretically b
 
 We envision and would love to see Concierge Servers running as Python Eggs, Ruby Gems, PHP scripts, in a .NET server maybe in [Azure](http://www.windowsazure.com/en-us/); anything that can hosts the [Google V8 Javascript engine](http://code.google.com/p/v8/) or any other current or future Javascript engine equivalent.
 
-###Client-side Concierge
+###Client-side Concierge Server
 We can even envision Concierge Servers being able to be run in the browsers so that client-side developers could share Concierge Scripts for client-side development for those who don't or cannot use Concierge as a proxy server.
 
 ###The Server: The Epicenter for Concierge Innovation
