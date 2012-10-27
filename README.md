@@ -34,7 +34,7 @@ Concierge Scripts are designed to be highly constrained, just like [REST](http:/
 The `$api` object also has a minumum number or other properties and methods such as `request`, `response` and `server` as well as `header()`, `code()` and `out()` and probably a few more. The final list will be what we discover is minimimally required for real-world use-cases, and nothing more.
 
 ### Example: Foursquare Venue Categories
-At it's simplest here's a Concierge script that calls the [FourSquare's v2 API](http://developer.foursquare.com) to get a [list of venue categories](https://developer.foursquare.com/docs/venues/categories). This takes a much larger list of categories and returns just the top level categories but as an object instead of an array so each category can accessed by category ID, i.e. `categories['4d4b7104d754a06370d81259']`:
+At it's simplest here's a Concierge Script that calls the [FourSquare's v2 API](http://developer.foursquare.com) to get a [list of venue categories](https://developer.foursquare.com/docs/venues/categories). This takes a much larger list of categories and returns just the top level categories but as an object instead of an array so each category can accessed by category ID, i.e. `categories['4d4b7104d754a06370d81259']`:
 
     $api.GET('venue-categories',function(data) {
       var category, categories = {};
@@ -110,7 +110,7 @@ Here is what the [Concierge for Foursquare v2](http://github.com/newclarity/conc
     };
 
 ###Concierge Candidates for Hypermedia-Specific Content-Types
-We also envision people being able to build different Concierge Candidates that each work with a different hypermedia-specific content type. For example we envision it will be possible to create a Concierge for any or all of the following that could allow a Concierge Script to interact with any hypermedia API that uses them, such as these and others:
+We also envision people being able to build different Concierge Candidates that each work with a different hypermedia-specific content type. For example we envision it will be possible to create a Concierge Candidate for any or all of the following that could allow a Concierge Script to interact with any hypermedia API that uses them, such as these and others:
 
 - [**Siren**](http://github.com/kevinswiber/siren#readme)
 - [**HAL**](http://stateless.co/hal_specification.html)
@@ -168,7 +168,7 @@ Concierge is designed to be is super easy for the person who wants to do real wo
 
 ###Allows API Clients to Delegate
 
-At first blush, you might not think Concierge would be the best solution for high performance API access. Consider the benefit of being able to offload calling multiple API calls and performing the required data transformations on a Concierge server rather than having to do all the work in a single mobile device or WordPress plugin? Imagine being able to go write a named Concierge Script and then just being able to run it by accessing a single URL as you would an RSS feed? This is a large part of the vision of Concierge.
+At first blush, you might not think Concierge would be the best solution for high performance API access. Consider the benefit of being able to offload calling multiple API calls and performing the required data transformations on a Concierge Server rather than having to do all the work in a single mobile device or WordPress plugin? Imagine being able to go write a named Concierge Script and then just being able to run it by accessing a single URL as you would an RSS feed? This is a large part of the vision of Concierge.
 
 ###Simplifies Requirements Discovery
 
@@ -180,7 +180,7 @@ We think that there's one thing that REST purists should like about Concierge an
 
 While this one presumes Concierge will be wildly successful, think about how many different API clients are created for all the different APIs and all the different languages. Currently lots of effort is distributed widely across tens of thousands of APIs. Imagine if a lot of that engineering talent could be concentrated on making Concierge better, more performant, more scalable, easier to use?
 
-With Concierge every API publisher could create a Concierge for their API and then anyone running any platform could access their API without the need for a custom developed API client. And even if they do need a custom developer API client, building one would be much easier.
+With Concierge every API publisher could create a Concierge Candidate for their API and then anyone running any platform could access their API without the need for a custom developed API client. And even if they do need a custom developer API client, building one would be much easier.
 
 ##Challenges
 
